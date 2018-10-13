@@ -94,13 +94,3 @@ def main(rodadas, tipo):
 #main()
 
 main(20, 'tf')
-
-"""texto = ["they want to marry here where they marry with beautiful flowers", "they like this beautiful place", "do you think this girl is beautiful?"]
-x = pre.preprocessamento(texto)
-
-print(pre.dicionario(x))
-print(pre.bag(x, 'tfidf'))
-vec = feature_extraction.text.TfidfVectorizer( stop_words='english')
-sk = vec.fit_transform(["they want to marry here where they marry with beautiful flowers", "they like this beautiful place", "do you think this girl is beautiful?"]).toarray()
-print(vec.get_feature_names())
-print(sk)"""
