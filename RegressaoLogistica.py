@@ -5,6 +5,7 @@ import  math
 import preprocessamento as pre
 from sklearn import metrics
 import random
+import nltk
 #0.2 10 74
 #0.3 10 75
 #0.4 10 75
@@ -35,8 +36,8 @@ def acharCoeficiente(data, classes, rodadas):
 def treino(treino_doc, treino_classe, tipo, rodadas):
     #data = tipo.fit_transform(treino_doc)
     #data = data.toarray()
-    print("bag")
-    data = pre.bag((treino_doc), tipo)
+
+    data = pre.bag(treino_doc, tipo)
     print("Procurando coeficiente...")
     print(datetime.datetime.now())
     coeficiente = (acharCoeficiente(data, treino_classe, rodadas))
@@ -46,11 +47,11 @@ def treino(treino_doc, treino_classe, tipo, rodadas):
 
 def teste(coeficientes, teste_doc, tipo):
     classes = []
+    #tipo =  feature_extraction.text.CountVectorizer(stop_words='english')
     #teste = tipo.transform(teste_doc)
     #teste = teste.toarray()
 
-    teste = pre.bag((teste_doc), tipo)
-
+    teste = pre.bag(teste_doc, tipo)
     acerto = 0
     total = len(teste)
     for i in range(0, len(teste)):
@@ -61,31 +62,31 @@ def teste(coeficientes, teste_doc, tipo):
             classes.append(1)
     return classes
 
-def metrica(classe_teste, x):
+def metrica(classe_teste, x, metrica):
     total = len(classe_teste)
     acerto = 0
-    for i in range(0,total):
+    if metrica is 'acuracia':
+        x = metrica + ": " + str(metrics.accuracy_score(y_true=classe_teste,y_pred=x))
+    elif metrica is 'f-mesure':
+        x = metrica + ": " + str(metrics.f1_score(y_true=classe_teste,y_pred=x))
+    elif metrica is 'recall':
+        x = metrica + ": " + str(metrics.recall_score(y_true=classe_teste,y_pred=x))
+    elif metrica is "precisão":
+        x = metrica + ": " + str(metrics.precision_score(y_true=classe_teste,y_pred=x))
 
-        if classe_teste[i] is x[i] :
-            acerto = acerto + 1
-    print(acerto)
-    x = "Acurácia: " + str(acerto / total * 100) + "%"
     print(x)
     return x
 def main(rodadas, tipo):
-    #conta = feature_extraction.text.TfidfVectorizer(stop_words='english', binary=True)
-
+    #tipo = feature_extraction.text.CountVectorizer(stop_words='english')
     x = l.ler("doc_classes")
     doc = x[0]
     classes = x[1]
     print("treino")
     treino_doc, treino_classes, teste_doc, teste_classes = doc[0:800], classes[0:800], doc[800:1000], classes[800:1000]
-    #treino_doc, treino_classes, teste_doc, teste_classes =  l.ler("treinoetesteemb")
     x = treino(treino_doc, treino_classes, tipo,rodadas)
     print("teste")
-    labels = teste(x, teste_doc, tipo)
-
-    return metrica(teste_classes, labels)
+    labels = teste(x,teste_doc, tipo)
+    return metrica(teste_classes, labels, 'acuracia')
 
 
 
@@ -93,4 +94,5 @@ def main(rodadas, tipo):
 #binario 79
 #main()
 
-main(20, 'tf')
+
+main(5  , 'tf')

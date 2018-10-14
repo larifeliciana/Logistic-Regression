@@ -6,8 +6,6 @@ def preprocessamento(lista): ##Lê uma pasta com os arquivos de texto e retorna 
     nlp = spacy.load('en')
     processada = []
     for n in range(0,len(lista)):
-        if n % 10 is 0:
-            print(n)
         processada.append(preprocessamentoS(lista[n], nlp))
     return processada
 
@@ -46,25 +44,32 @@ def idf(docs):
         idf = (t)/x
         vetor.update({i:idf})
     return vetor
+
 def bag(docs, tipo):
     bag = []
     features = dicionario(docs)
-    idf1 = idf(docs)
+#    print(features)
+  #  idf1 = idf(docs)
     print("bag fazendo")
     for i in docs:
         bag.append([])
         for j in features:
             if tipo is 'tf':
                   bag[-1].append(i.count(j))
+         #   else : bag[-1].append(idf1[j])
 
-            elif tipo is 'tfidf':
+
+    return bag
+
+
+
+
+
+"""  elif tipo is 'tfidf':
                 if j in i:
                     bag[-1].append(idf1[j])
                 else: bag[-1].append(0)
             elif tipo is 'bin':
                 if j in i:
                     bag[-1].append(1)
-                else: bag[-1].append(0)
-
-    return bag
-
+                else: bag[-1].append(0)"""

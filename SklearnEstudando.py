@@ -79,8 +79,7 @@ def modelo(tipo, metrica, treino_doc, teste_doc, treino_classe, teste_classe):
 doc = x[0]
 classes = x[1]
 treino_doc, treino_classes, teste_doc, teste_classes = doc[0:800], classes[0:800], doc[800:1000], classes[800:1000]
-x, y = bag('bin', treino_doc,teste_doc)
+x 
 x = modelo('logistic', 'acuracia', x,y, treino_classes, teste_classes)
 print(x)
-
 """
