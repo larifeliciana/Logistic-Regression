@@ -48,6 +48,7 @@ def idf(docs):
 def bag(docs, tipo):
     bag = []
     features = dicionario(docs)
+    #print(features)
 #    print(features)
   #  idf1 = idf(docs)
     print("bag fazendo")
@@ -56,6 +57,10 @@ def bag(docs, tipo):
         for j in features:
             if tipo is 'tf':
                   bag[-1].append(i.count(j))
+            elif tipo is 'bin':
+                if j in i:
+                    bag[-1].append(1)
+                else: bag[-1].append(0)
          #   else : bag[-1].append(idf1[j])
 
 

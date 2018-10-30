@@ -9,7 +9,7 @@ import nltk
 #0.2 10 74
 #0.3 10 75
 #0.4 10 75
-def recalcular(coeficiente,data, classe, prediction):
+def recalcular(coeficiente,data, classe, prediction): #TODO Hyperparametro, botar mais um parametro
     return coeficiente + 0.3 * (classe - prediction) * prediction * (1 - prediction) * data
 
 def coeficientes(coeficiente, data, previsao, classe):
@@ -33,11 +33,11 @@ def acharCoeficiente(data, classes, rodadas):
      coeficiente = coeficientes(coeficiente, data[i], previsao, classe)
  return  coeficiente
 
-def treino(treino_doc, treino_classe, tipo, rodadas):
+def treino(treino_doc, treino_classe, tipo, rodadas, data):
     #data = tipo.fit_transform(treino_doc)
     #data = data.toarray()
 
-    data = pre.bag(treino_doc, tipo)
+ #   data = pre.bag(treino_doc, tipo)
     print("Procurando coeficiente...")
     print(datetime.datetime.now())
     coeficiente = (acharCoeficiente(data, treino_classe, rodadas))
@@ -45,13 +45,12 @@ def treino(treino_doc, treino_classe, tipo, rodadas):
 
     return coeficiente
 
-def teste(coeficientes, teste_doc, tipo):
+def teste(coeficientes, teste_doc, tipo, teste):
     classes = []
     #tipo =  feature_extraction.text.CountVectorizer(stop_words='english')
     #teste = tipo.transform(teste_doc)
     #teste = teste.toarray()
-
-    teste = pre.bag(teste_doc, tipo)
+#    teste = pre.bag(teste_doc, tipo)
     acerto = 0
     total = len(teste)
     for i in range(0, len(teste)):
@@ -73,6 +72,8 @@ def metrica(classe_teste, x, metrica):
         x = metrica + ": " + str(metrics.recall_score(y_true=classe_teste,y_pred=x))
     elif metrica is "precisão":
         x = metrica + ": " + str(metrics.precision_score(y_true=classe_teste,y_pred=x))
+    elif metrica is "matriz":
+        x = metrica + ": " + str(metrics.confusion_matrix(y_true=classe_teste,y_pred=x))
 
     print(x)
     return x
@@ -82,10 +83,13 @@ def main(rodadas, tipo):
     doc = x[0]
     classes = x[1]
     print("treino")
+    bag = pre.bag(doc, 'tf')
+
     treino_doc, treino_classes, teste_doc, teste_classes = doc[0:800], classes[0:800], doc[800:1000], classes[800:1000]
-    x = treino(treino_doc, treino_classes, tipo,rodadas)
+    x = treino(treino_doc, treino_classes, tipo,rodadas, bag[0:800])
     print("teste")
-    labels = teste(x,teste_doc, tipo)
+    labels = teste(x,teste_doc, tipo, bag[800:1000])
+    metrica(teste_classes, labels, 'matriz')
     return metrica(teste_classes, labels, 'acuracia')
 
 
@@ -95,4 +99,5 @@ def main(rodadas, tipo):
 #main()
 
 
-main(5  , 'tf')
+
+(main(60, 'tf'))
