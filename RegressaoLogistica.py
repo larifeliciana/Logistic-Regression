@@ -1,6 +1,6 @@
 from sklearn import feature_extraction
 import datetime
-import SklearnEstudando as l
+import utils as l
 import  math
 import preprocessamento as pre
 from sklearn import metrics
@@ -79,7 +79,7 @@ def metrica(classe_teste, x, metrica):
     return x
 def main(rodadas, tipo):
     #tipo = feature_extraction.text.CountVectorizer(stop_words='english')
-    x = l.ler("doc_classes")
+    x = l.ler("data.pk")
     doc = x[0]
     classes = x[1]
     print("treino")
